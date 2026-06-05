@@ -95,12 +95,12 @@ def test_register_h1(client):
 
 
 def test_register_get_logged_in_redirects(client):
-    """GET /register while logged in must redirect (302) to /dashboard."""
+    """GET /register while logged in must redirect (302) to /profile."""
     with client.session_transaction() as sess:
         sess["user_id"] = 1
     response = client.get("/register")
     assert response.status_code == 302
-    assert "/dashboard" in response.headers["Location"]
+    assert "/profile" in response.headers["Location"]
 
 
 # ------------------------------------------------------------------ #
