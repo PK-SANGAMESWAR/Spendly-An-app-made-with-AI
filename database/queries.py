@@ -123,3 +123,99 @@ def get_category_breakdown(user_id):
         return breakdown
     finally:
         conn.close()
+
+def get_extended_summary_stats(user_id):
+    """Retrieve aggregate statistics for dashboard: total_spent, transaction_count, top_category, avg_spent."""
+    conn = get_db()
+    try:
+        cursor = conn.cursor()
+        res = cursor.execute(
+            """SELECT 
+                   COALESCE(SUM(amount), 0.0) AS total_spent, 
+                   COUNT(*) AS transaction_count,
+                   COALESCE(AVG(amount), 0.0) AS avg_spent
+               FROM expenses 
+               WHERE user_id = ?""", 
+            (user_id,)
+        ).fetchone()
+        
+        total_spent = res["total_spent"]
+        transaction_count = res["transaction_count"]
+        avg_spent = res["avg_spent"]
+        
+        if transaction_count == 0:
+            return {
+                "total_spent": 0.0,
+                "transaction_count": 0,
+                "top_category": "—",
+                "avg_spent": 0.0
+            }
+            
+        top_res = cursor.execute(
+            "SELECT category FROM expenses WHERE user_id = ? GROUP BY category ORDER BY SUM(amount) DESC, category LIMIT 1",
+            (user_id,)
+        ).fetchone()
+        
+        top_category = top_res["category"] if top_res else "—"
+        
+        return {
+            "total_spent": total_spent,
+            "transaction_count": transaction_count,
+            "top_category": top_category,
+            "avg_spent": avg_spent
+        }
+    finally:
+        conn.close()
+
+def get_filtered_expenses(user_id, search_query="", category="", limit=10, offset=0):
+    """Retrieve filtered and paginated list of user expenses."""
+    conn = get_db()
+    try:
+        conditions = ["user_id = ?"]
+        params = [user_id]
+        if search_query:
+            conditions.append("description LIKE ?")
+            params.append(f"%{search_query}%")
+        if category:
+            conditions.append("category = ?")
+            params.append(category)
+        
+        sql = f"SELECT id, date, description, category, amount FROM expenses WHERE {' AND '.join(conditions)} ORDER BY date DESC, created_at DESC LIMIT ? OFFSET ?"
+        params.extend([limit, offset])
+        
+        cursor = conn.cursor()
+        rows = cursor.execute(sql, params).fetchall()
+        return [
+            {
+                "id": row["id"],
+                "date": row["date"],
+                "description": row["description"],
+                "category": row["category"],
+                "amount": row["amount"]
+            }
+            for row in rows
+        ]
+    finally:
+        conn.close()
+
+def get_filtered_expenses_count(user_id, search_query="", category=""):
+    """Retrieve count of filtered user expenses."""
+    conn = get_db()
+    try:
+        conditions = ["user_id = ?"]
+        params = [user_id]
+        if search_query:
+            conditions.append("description LIKE ?")
+            params.append(f"%{search_query}%")
+        if category:
+            conditions.append("category = ?")
+            params.append(category)
+        
+        sql = f"SELECT COUNT(*) FROM expenses WHERE {' AND '.join(conditions)}"
+        
+        cursor = conn.cursor()
+        res = cursor.execute(sql, params).fetchone()
+        return res[0] if res else 0
+    finally:
+        conn.close()
+

@@ -140,38 +140,6 @@ def test_profile_displays_summary_stats(authenticated_client):
     assert "Top Category" in html
     assert "Food" in html
 
-
-def test_profile_displays_recent_transactions(authenticated_client):
-    """The profile page displays a transactions table with recent hardcoded rows."""
-    response = authenticated_client.get("/profile")
-    html = response.data.decode("utf-8")
-    
-    assert "Recent Transactions" in html
-    # Row 1: Weekly Groceries
-    assert "Weekly Groceries" in html
-    assert "₹2,400.00" in html
-    # Row 2: Electricity Bill
-    assert "Electricity Bill" in html
-    assert "₹1,800.00" in html
-    # Row 3: Metro Recharge
-    assert "Metro Recharge" in html
-    assert "₹1,000.00" in html
-
-
-def test_profile_displays_category_breakdown(authenticated_client):
-    """The profile page displays category breakdown progress bars."""
-    response = authenticated_client.get("/profile")
-    html = response.data.decode("utf-8")
-    
-    assert "Category Breakdown" in html
-    assert "Food" in html
-    assert "46%" in html
-    assert "Bills" in html
-    assert "35%" in html
-    assert "Travel" in html
-    assert "19%" in html
-
-
 def test_navbar_shows_logged_in_state(authenticated_client):
     """Navbar shows the logged-in state (user name, profile link, dashboard link, and logout)."""
     response = authenticated_client.get("/profile")

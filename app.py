@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import math
 from functools import wraps
 from datetime import datetime
 
@@ -7,13 +8,23 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from database.db import get_db, init_db, seed_db, create_user, get_user_by_email
-from database.queries import get_recent_transactions, get_user_by_id, get_summary_stats, get_category_breakdown
+from database.queries import get_recent_transactions, get_user_by_id, get_summary_stats, get_category_breakdown, get_extended_summary_stats, get_filtered_expenses, get_filtered_expenses_count
 
 app = Flask(__name__)
 
 # Load secret key from environment; fall back to a dev-only key when
 # running locally without a .env file.  Never use the fallback in production.
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-only-insecure-key-change-me")
+
+
+@app.template_filter("inr")
+def inr_filter(value):
+    try:
+        val = float(value)
+    except (ValueError, TypeError):
+        val = 0.0
+    return f"₹{val:,.2f}"
+
 
 
 # ------------------------------------------------------------------ #
@@ -139,10 +150,37 @@ def privacy():
 # Placeholder routes — students will implement these                  #
 # ------------------------------------------------------------------ #
 
+PAGE_SIZE = 10
+
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    return "Dashboard — coming in Step 5"
+    user_id = session["user_id"]
+    # --- parse query params ---
+    q        = request.args.get("q", "").strip()
+    category = request.args.get("category", "").strip()
+    try:
+        page = int(request.args.get("page", 1))
+        if page <= 0:
+            page = 1
+    except ValueError:
+        page = 1
+    # --- query ---
+    stats      = get_extended_summary_stats(user_id)
+    user       = get_user_by_id(user_id)
+    categories = get_category_breakdown(user_id)
+    count      = get_filtered_expenses_count(user_id, q, category)
+    total_pages = max(1, math.ceil(count / PAGE_SIZE))
+    page        = min(page, total_pages)
+    offset      = (page - 1) * PAGE_SIZE
+    expenses   = get_filtered_expenses(user_id, q, category, PAGE_SIZE, offset)
+    return render_template(
+        "dashboard.html",
+        user=user, stats=stats, categories=categories,
+        expenses=expenses, q=q, category=category,
+        page=page, total_pages=total_pages,
+    )
+
 
 
 @app.route("/logout")
@@ -162,12 +200,6 @@ def profile():
         return redirect(url_for("logout"))
     
     stats = get_summary_stats(user_id)
-    
-    # Dynamic expenses fetched by Subagent 1
-    expenses = get_recent_transactions(user_id, limit=10)
-    
-    # Dynamic categories breakdown fetched by Subagent 3
-    categories = get_category_breakdown(user_id)
     initials = ''.join(w[0].upper() for w in user_info['name'].split()[:2])
     member_since = user_info["member_since"]
     
@@ -175,11 +207,10 @@ def profile():
         "profile.html",
         user=user_info,
         stats=stats,
-        expenses=expenses,
-        categories=categories,
         initials=initials,
         member_since=member_since
     )
+
 
 
 @app.route("/expenses/add")
