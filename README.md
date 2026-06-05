@@ -113,6 +113,29 @@ The server will start on [http://127.0.0.1:5001](http://127.0.0.1:5001).
 
 ---
 
+## 🌐 Live Deployment (Railway)
+
+Spendly is deployed live on Railway!
+
+- **Live URL:** [https://dynamic-mercy-production-98ac.up.railway.app](https://dynamic-mercy-production-98ac.up.railway.app)
+- **Demo User Credentials:**
+  - **Email:** `demo@spendly.com`
+  - **Password:** `demo123`
+
+### 🔍 Troubleshooting DNS Issues (e.g. Railtel / Local ISPs)
+
+If you get a DNS resolution error ("Site can't be reached" or `DNS_PROBE_FINISHED_NXDOMAIN`) when visiting the live URL, your local Internet Service Provider's DNS server (such as Railtel) is likely refusing or failing to resolve the `up.railway.app` hostname. 
+
+**How to resolve this:**
+Change your computer's DNS settings to use a public DNS resolver like **Google DNS** or **Cloudflare DNS**:
+
+- **Preferred DNS Server:** `8.8.8.8` (Google)
+- **Alternate DNS Server:** `1.1.1.1` (Cloudflare)
+
+After saving, flush your local DNS cache (`ipconfig /flushdns` in Command Prompt/PowerShell) and refresh your browser.
+
+---
+
 ## 🧪 Testing
 
 The codebase includes an extensive suite of automated tests verifying database helpers, authentication procedures, and routing filters.
