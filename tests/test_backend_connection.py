@@ -272,11 +272,6 @@ def test_profile_route_authenticated_seed_user(client, mem_db):
     assert "8" in html
     assert "Bills" in html
 
-    # Verify category rendering and non-zero widths
-    # e.g., progress bar styles should contain non-zero width values
-    assert "style=\"width: 43%;\"" in html  # Bills = 150 / 346.24 = 43.3% -> 43%
-    assert "Entertainment" in html
-    assert "Other" in html
 
 
 def test_profile_route_brand_new_user(client, mem_db):

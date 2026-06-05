@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}Spendly — Dashboard{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Header Welcome -->
+    <header class="dashboard-header">
+        <h1 class="welcome-heading">Welcome back, {{ user.name }}</h1>
+        <p class="dashboard-subtitle">Here is your financial overview for Spendly</p>
+    </header>
+
+    <!-- Section 1: Summary Stats Row -->
+    <section class="stats-row" aria-label="Summary Statistics">
+        <div class="stat-card">
+            <div class="stat-meta">
+                <span class="stat-label">Total Spent</span>
+                <i data-lucide="credit-card" class="stat-icon text-muted"></i>
+            </div>
+            <span class="stat-value text-tabular">{{ stats.total_spent | inr }}</span>
+        </div>
+        <div class="stat-card">
+            <div class="stat-meta">
+                <span class="stat-label">Total Transactions</span>
+                <i data-lucide="receipt" class="stat-icon text-muted"></i>
+            </div>
+            <span class="stat-value text-tabular">{{ stats.transaction_count }}</span>
+        </div>
+        <div class="stat-card">
+            <div class="stat-meta">
+                <span class="stat-label">Avg Transaction</span>
+                <i data-lucide="trending-up" class="stat-icon text-muted"></i>
+            </div>
+            <span class="stat-value text-tabular">{{ stats.avg_spent | inr }}</span>
+        </div>
+        <div class="stat-card">
+            <div class="stat-meta">
+                <span class="stat-label">Top Category</span>
+                <i data-lucide="tag" class="stat-icon text-muted"></i>
+            </div>
+            <span class="stat-value">
+                <span class="badge badge-{{ stats.top_category | lower }}">{{ stats.top_category }}</span>
+            </span>
+        </div>
+    </section>
+
+    <!-- Main Layout Grid (Category breakdown + Transactions Table) -->
+    <div class="dashboard-main-grid">
+        <!-- Section 2: Category Breakdown -->
+        <aside class="breakdown-sidebar">
+            <section class="dashboard-card section-card">
+                <h2 class="section-title">
+                    <i data-lucide="pie-chart" class="section-title-icon"></i>
+                    Category Breakdown
+                </h2>
+                {% if categories %}
+                <div class="category-list">
+                    {% for cat in categories %}
+                    <div class="category-row">
+                        <div class="category-meta">
+                            <span class="category-name">{{ cat.name }}</span>
+                            <span class="category-amt text-tabular">{{ cat.amount | inr }}</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-track">
+                                <div class="progress-bar-fill fill-{{ cat.name|lower }}" style="width: {{ cat.pct }}%;"></div>
+                            </div>
+                            <span class="progress-percentage text-tabular">{{ cat.pct }}%</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-breakdown">
+                    <p class="text-muted">No category data available.</p>
+                </div>
+                {% endif %}
+            </section>
+        </aside>
+
+        <!-- Section 3 & 4: Search/Filter + Transactions List -->
+        <main class="transactions-container">
+            <!-- Search & Filter Bar -->
+            <section class="filter-card">
+                <form method="GET" action="{{ url_for('dashboard') }}" class="filter-form">
+                    <div class="search-input-wrapper">
+                        <i data-lucide="search" class="search-icon"></i>
+                        <input type="text" name="q" value="{{ q }}" placeholder="Search expenses…" class="form-input search-input">
+                    </div>
+                    
+                    <select name="category" class="form-input category-select">
+                        <option value="">All categories</option>
+                        {% for cat_name in ["Food", "Travel", "Bills", "Shopping", "Health", "Entertainment", "Other"] %}
+                        <option value="{{ cat_name }}" {% if category == cat_name %}selected{% endif %}>{{ cat_name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <button type="submit" class="btn-primary filter-btn">Filter</button>
+                    
+                    {% if q or category %}
+                    <a href="{{ url_for('dashboard') }}" class="clear-filters-link">Clear filters</a>
+                    {% endif %}
+                </form>
+            </section>
+
+            <!-- Transactions List & Table -->
+            <section class="dashboard-card section-card table-section">
+                <h2 class="section-title">
+                    <i data-lucide="list" class="section-title-icon"></i>
+                    Transactions History
+                </h2>
+                
+                {% if expenses %}
+                <div class="table-wrapper">
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th class="text-right">Amount</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for expense in expenses %}
+                            <tr>
+                                <td class="text-tabular text-muted">{{ expense.date }}</td>
+                                <td class="desc-cell">{{ expense.description }}</td>
+                                <td>
+                                    <span class="badge badge-{{ expense.category | lower }}">{{ expense.category }}</span>
+                                </td>
+                                <td class="text-right text-tabular text-bold">{{ expense.amount | inr }}</td>
+                                <td class="text-center actions-cell">
+                                    <a href="{{ url_for('edit_expense', id=expense.id) }}" class="action-link edit-link">Edit</a>
+                                    <span class="action-divider">|</span>
+                                    <a href="{{ url_for('delete_expense', id=expense.id) }}" class="action-link delete-link">Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination Controls -->
+                {% if total_pages > 1 %}
+                <nav class="pagination-controls" aria-label="Dashboard pagination">
+                    {% if page > 1 %}
+                    <a href="{{ url_for('dashboard', q=q, category=category, page=page-1) }}" class="pagination-btn">← Previous</a>
+                    {% else %}
+                    <span class="pagination-btn disabled">← Previous</span>
+                    {% endif %}
+
+                    <span class="pagination-indicator">Page {{ page }} of {{ total_pages }}</span>
+
+                    {% if page < total_pages %}
+                    <a href="{{ url_for('dashboard', q=q, category=category, page=page+1) }}" class="pagination-btn">Next →</a>
+                    {% else %}
+                    <span class="pagination-btn disabled">Next →</span>
+                    {% endif %}
+                </nav>
+                {% endif %}
+
+                {% else %}
+                <!-- Empty State -->
+                <div class="empty-state">
+                    {% if q or category %}
+                    <i data-lucide="search" class="empty-state-icon"></i>
+                    <h3>No results for your search</h3>
+                    <p>Try clearing filters or search for another description query.</p>
+                    <a href="{{ url_for('dashboard') }}" class="btn-primary">Clear filters</a>
+                    {% else %}
+                    <i data-lucide="shopping-bag" class="empty-state-icon"></i>
+                    <h3>No expenses yet</h3>
+                    <p>Add your expenses to see detailed category analysis and budget breakdowns.</p>
+                    <a href="#" class="btn-primary">Add your first expense</a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </section>
+        </main>
+    </div>
+</div>
+{% endblock %}

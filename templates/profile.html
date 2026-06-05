@@ -51,65 +51,7 @@
                 </span>
             </div>
         </div>
-
-        <!-- Two section grids: Category breakdown + Transaction History -->
-        <div class="profile-sections">
-            <!-- Category Breakdown -->
-            <section class="profile-card section-card">
-                <h3 class="section-title">
-                    <i data-lucide="pie-chart" class="section-title-icon"></i>
-                    Category Breakdown
-                </h3>
-                <div class="category-list">
-                    {% for cat in categories %}
-                    <div class="category-row">
-                        <div class="category-meta">
-                            <span class="category-name">{{ cat.name }}</span>
-                            <span class="category-amt text-tabular">₹{{ "{:,.2f}".format(cat.amount) }}</span>
-                        </div>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-track">
-                                <div class="progress-bar-fill fill-{{ cat.name|lower }}" style="width: {{ cat.pct }}%;"></div>
-                            </div>
-                            <span class="progress-percentage text-tabular">{{ cat.pct }}%</span>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </section>
-
-            <!-- Recent Transactions Table -->
-            <section class="profile-card section-card">
-                <h3 class="section-title">
-                    <i data-lucide="clock" class="section-title-icon"></i>
-                    Recent Transactions
-                </h3>
-                <div class="table-wrapper">
-                    <table class="transaction-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Description</th>
-                                <th>Category</th>
-                                <th class="text-right">Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for exp in expenses %}
-                            <tr>
-                                <td class="text-tabular text-muted">{{ exp.date }}</td>
-                                <td class="desc-cell">{{ exp.description }}</td>
-                                <td>
-                                    <span class="badge badge-{{ exp.category|lower }}">{{ exp.category }}</span>
-                                </td>
-                                <td class="text-right text-tabular text-bold">₹{{ "{:,.2f}".format(exp.amount) }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
     </main>
 </div>
 {% endblock %}
+
