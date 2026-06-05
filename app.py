@@ -8,7 +8,17 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from database.db import get_db, init_db, seed_db, create_user, get_user_by_email
-from database.queries import get_recent_transactions, get_user_by_id, get_summary_stats, get_category_breakdown, get_extended_summary_stats, get_filtered_expenses, get_filtered_expenses_count
+from database.queries import (
+    get_recent_transactions,
+    get_user_by_id,
+    get_summary_stats,
+    get_category_breakdown,
+    get_extended_summary_stats,
+    get_filtered_expenses,
+    get_filtered_expenses_count,
+    get_expense_by_id,
+    update_expense,
+)
 
 app = Flask(__name__)
 
@@ -322,9 +332,65 @@ def add_expense():
     return "Add expense — coming in Step 7"
 
 
-@app.route("/expenses/<int:id>/edit")
+@app.route("/expenses/<int:id>/edit", methods=["GET", "POST"])
+@login_required
 def edit_expense(id):
-    return "Edit expense — coming in Step 8"
+    user_id = session.get("user_id")
+
+    # --- Fetch and verify expense belongs to user ---
+    expense = get_expense_by_id(user_id, id)
+    if expense is None:
+        flash("Expense not found or access denied.", "error")
+        return redirect(url_for("dashboard"))
+
+    if request.method == "GET":
+        return render_template("edit_expense.html", expense=expense)
+
+    # ---- POST: collect submitted values ----
+    amount_raw   = request.form.get("amount", "").strip()
+    category     = request.form.get("category", "").strip()
+    date_raw     = request.form.get("date", "").strip()
+    description  = request.form.get("description", "").strip()
+
+    # ---- Validate inputs ----
+    errors = []
+    try:
+        amount = float(amount_raw)
+        if amount <= 0:
+            errors.append("Amount must be a positive number.")
+    except (ValueError, TypeError):
+        errors.append("Amount must be a valid number.")
+
+    if not category:
+        errors.append("Category is required.")
+
+    try:
+        datetime.strptime(date_raw, "%Y-%m-%d")
+        date_val = date_raw
+    except (ValueError, TypeError):
+        errors.append("Date must be in YYYY-MM-DD format.")
+
+    if errors:
+        for e in errors:
+            flash(e, "error")
+        # Re-render with submitted values so the user doesn't lose input
+        expense_preview = {
+            "id": expense["id"],
+            "amount": amount_raw,
+            "category": category,
+            "date": date_raw,
+            "description": description,
+        }
+        return render_template("edit_expense.html", expense=expense_preview)
+
+    # ---- Persist update ----
+    rows_updated = update_expense(id, user_id, amount, category, date_val, description)
+    if rows_updated == 0:
+        flash("Unable to update expense. It may have been removed.", "error")
+        return redirect(url_for("dashboard"))
+
+    flash("Expense updated.", "success")
+    return redirect(url_for("dashboard"))
 
 
 @app.route("/expenses/<int:id>/delete")

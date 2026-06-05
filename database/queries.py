@@ -277,3 +277,44 @@ def get_filtered_expenses_count(user_id, search_query="", category=""):
     finally:
         conn.close()
 
+
+def get_expense_by_id(user_id, expense_id):
+    """Return a single expense dict for the given user and expense id, or None."""
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT id, user_id, amount, category, date, description FROM expenses WHERE id = ? AND user_id = ?",
+            (expense_id, user_id),
+        ).fetchone()
+        if not row:
+            return None
+        return {
+            "id": row["id"],
+            "user_id": row["user_id"],
+            "amount": row["amount"],
+            "category": row["category"],
+            "date": row["date"],
+            "description": row["description"],
+        }
+    finally:
+        conn.close()
+
+
+def update_expense(expense_id, user_id, amount, category, date, description):
+    """Update an expense row. Returns number of rows updated (0 if none)."""
+    conn = get_db()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            UPDATE expenses
+            SET amount = ?, category = ?, date = ?, description = ?
+            WHERE id = ? AND user_id = ?
+            """,
+            (amount, category, date, description, expense_id, user_id),
+        )
+        conn.commit()
+        return cursor.rowcount
+    finally:
+        conn.close()
+
