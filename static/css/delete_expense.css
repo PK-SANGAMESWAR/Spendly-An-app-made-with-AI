@@ -1,0 +1,225 @@
+/* ------------------------------------------------------------------ */
+/* Delete Expense Styles                                              */
+/* ------------------------------------------------------------------ */
+
+:root {
+    /* Category Colors for Badge styles, matching dashboard.css */
+    --color-food: #f97316;
+    --color-food-bg: #fff7ed;
+    --color-food-border: #ffedd5;
+
+    --color-travel: #2563eb;
+    --color-travel-bg: #eff6ff;
+    --color-travel-border: #dbeafe;
+
+    --color-bills: #dc2626;
+    --color-bills-bg: #fef2f2;
+    --color-bills-border: #fee2e2;
+
+    --color-shopping: #7c3aed;
+    --color-shopping-bg: #f5f3ff;
+    --color-shopping-border: #ede9fe;
+
+    --color-health: #0d9488;
+    --color-health-bg: #f0fdfa;
+    --color-health-border: #ccfbf1;
+
+    --color-entertainment: #db2777;
+    --color-entertainment-bg: #fff1f2;
+    --color-entertainment-border: #ffe4e6;
+
+    --color-other: #4b5563;
+    --color-other-bg: #f9fafb;
+    --color-other-border: #f3f4f6;
+}
+
+.delete-card {
+    border: 1px solid var(--border-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Alert Banner */
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.alert-warning {
+    background: #fffbeb;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+
+.alert-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+/* Expense Details Box */
+.expense-details-box {
+    background: var(--paper-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.description-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+}
+
+.detail-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.detail-value {
+    font-weight: 500;
+    color: var(--ink);
+}
+
+.amount-value {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+/* Badges Styling */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    text-transform: capitalize;
+}
+
+.badge-food {
+    background: var(--color-food-bg);
+    color: var(--color-food);
+    border: 1px solid var(--color-food-border);
+}
+
+.badge-travel {
+    background: var(--color-travel-bg);
+    color: var(--color-travel);
+    border: 1px solid var(--color-travel-border);
+}
+
+.badge-bills {
+    background: var(--color-bills-bg);
+    color: var(--color-bills);
+    border: 1px solid var(--color-bills-border);
+}
+
+.badge-shopping {
+    background: var(--color-shopping-bg);
+    color: var(--color-shopping);
+    border: 1px solid var(--color-shopping-border);
+}
+
+.badge-health {
+    background: var(--color-health-bg);
+    color: var(--color-health);
+    border: 1px solid var(--color-health-border);
+}
+
+.badge-entertainment {
+    background: var(--color-entertainment-bg);
+    color: var(--color-entertainment);
+    border: 1px solid var(--color-entertainment-border);
+}
+
+.badge-other {
+    background: var(--color-other-bg);
+    color: var(--color-other);
+    border: 1px solid var(--color-other-border);
+}
+
+/* Action Buttons */
+.delete-actions-form {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.btn-danger {
+    padding: 0.65rem 1.5rem;
+    background: var(--danger);
+    color: var(--paper);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-danger:hover {
+    background: #a93226;
+}
+
+.btn-secondary {
+    padding: 0.65rem 1.5rem;
+    background: var(--border-soft);
+    color: var(--ink);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s;
+    text-align: center;
+}
+
+.btn-secondary:hover {
+    background: var(--border);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .delete-actions-form {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .btn-danger,
+    .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+}
