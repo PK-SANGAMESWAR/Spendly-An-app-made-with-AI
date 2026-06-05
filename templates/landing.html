@@ -29,7 +29,7 @@
     <!-- CTA buttons -->
     <div class="hero-actions">
         <a href="{{ url_for('register') }}" class="btn-hero-primary">Create free account</a>
-        <a href="#features" class="btn-hero-secondary">See how it works</a>
+        <a href="#" id="btn-how-it-works" class="btn-hero-secondary">See how it works</a>
     </div>
 
     <!-- Browser mock dashboard -->
@@ -113,4 +113,70 @@
     </div>
 </section>
 
+<!-- ── Video modal ─────────────────────────────────────────────── -->
+<div id="video-modal" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="How Spendly works">
+    <div class="modal-container">
+        <button class="modal-close" id="modal-close-btn" aria-label="Close video">&#x2715;</button>
+        <div class="modal-video-wrapper">
+            <iframe
+                id="modal-video"
+                src=""
+                data-src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0"
+                title="How Spendly works"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    const modal    = document.getElementById('video-modal');
+    const iframe   = document.getElementById('modal-video');
+    const openBtn  = document.getElementById('btn-how-it-works');
+    const closeBtn = document.getElementById('modal-close-btn');
+
+    function openModal() {
+        // Set the src only when opening — avoids loading the video until needed
+        iframe.src = iframe.dataset.src;
+        modal.classList.add('modal-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden'; // block background scroll
+    }
+
+    function closeModal() {
+        modal.classList.remove('modal-open');
+        modal.setAttribute('aria-hidden', 'true');
+        // Reset src — this is the reliable vanilla-JS way to stop YouTube playback
+        iframe.src = '';
+        document.body.style.overflow = '';
+    }
+
+    // Open on button click
+    openBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        openModal();
+    });
+
+    // Close on ✕ button
+    closeBtn.addEventListener('click', closeModal);
+
+    // Close when clicking the dark overlay (not the inner container)
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('modal-open')) {
+            closeModal();
+        }
+    });
+}());
+</script>
 {% endblock %}
