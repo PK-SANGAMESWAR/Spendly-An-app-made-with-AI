@@ -1,0 +1,239 @@
+/* ------------------------------------------------------------------ */
+/* landing.css — hero section overrides only                          */
+/* ------------------------------------------------------------------ */
+
+/* ── Override the two-column hero grid ────────────────────────────── */
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem 0;
+    max-width: 860px;
+    margin: 0 auto;
+    gap: 0;
+}
+
+/* ── Badge ─────────────────────────────────────────────────────────── */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: #e8f5f0;
+    color: #1a472a;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    margin-bottom: 2rem;
+    border: 1px solid #c5e0d2;
+}
+
+.hero-badge-dot {
+    color: var(--accent);
+    font-size: 0.55rem;
+    line-height: 1;
+}
+
+/* ── Headline ──────────────────────────────────────────────────────── */
+.hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 6vw, 4rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+    font-style: normal;
+}
+
+.hero-title .hero-title-line2 {
+    display: block;
+    color: var(--accent);
+    font-style: normal;
+}
+
+/* Remove old <em> italic style inside hero */
+.hero-title em {
+    font-style: normal;
+    color: var(--accent);
+}
+
+/* ── Subtitle ──────────────────────────────────────────────────────── */
+.hero-subtitle {
+    font-size: 1.05rem;
+    color: var(--ink-muted);
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto 2.25rem;
+    text-align: center;
+}
+
+/* ── CTA buttons ───────────────────────────────────────────────────── */
+.hero-actions {
+    display: flex;
+    gap: 0.85rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 3.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-hero-primary {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.8rem 1.75rem;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 0.975rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.btn-hero-primary:hover { background: var(--accent); }
+
+.btn-hero-secondary {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.8rem 1.75rem;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 0.975rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.btn-hero-secondary:hover { background: var(--ink-soft); }
+
+/* ── Browser / dashboard mock ──────────────────────────────────────── */
+.hero-dashboard {
+    width: 100%;
+    max-width: 760px;
+    background: #f0ede8;
+    border-radius: 14px 14px 0 0;
+    overflow: hidden;
+    box-shadow: 0 -2px 0 var(--border), 2px 0 0 var(--border), -2px 0 0 var(--border);
+}
+
+.dashboard-chrome {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.chrome-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.chrome-red    { background: #ff5f57; }
+.chrome-yellow { background: #ffbd2e; }
+.chrome-green  { background: #28c840; }
+
+.dashboard-body {
+    background: var(--paper);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* ── Stat tiles ────────────────────────────────────────────────────── */
+.dash-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.dash-stat {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.1rem;
+}
+
+.dash-stat-label {
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+}
+
+.dash-stat-value {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 0.25rem;
+}
+
+.dash-stat-sub {
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    font-weight: 500;
+}
+
+.dash-sub-danger  { color: #c0392b; }
+.dash-sub-success { color: var(--accent); }
+
+/* ── Category bars ─────────────────────────────────────────────────── */
+.dash-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0 0.25rem;
+}
+
+.dash-bar-row {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+.dash-bar-label {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    text-align: right;
+}
+
+.dash-bar-track {
+    height: 10px;
+    background: var(--border-soft);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.dash-bar {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.8s ease;
+}
+
+.dash-bar-food   { background: #e6a817; }
+.dash-bar-travel { background: #3b82f6; }
+.dash-bar-bills  { background: #7c3aed; }
+
+/* ── Responsive ────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .hero { padding: 3rem 1rem 0; }
+
+    .dash-stats { grid-template-columns: 1fr; gap: 0.75rem; }
+
+    .btn-hero-primary,
+    .btn-hero-secondary { width: 100%; text-align: center; }
+
+    .hero-actions { flex-direction: column; width: 100%; max-width: 320px; }
+}

@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy — Spendly{% endblock %}
+
+{% block head %}
+<style>
+    /* ── Privacy page hero ───────────────────────────────────────── */
+    .privacy-hero {
+        background: var(--paper-warm);
+        border-bottom: 1px solid var(--border);
+        padding: 4rem 2rem 3rem;
+        text-align: center;
+    }
+
+    .privacy-badge {
+        display: inline-block;
+        background: var(--accent-light);
+        color: var(--accent);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.35rem 0.85rem;
+        border-radius: 999px;
+        margin-bottom: 1.25rem;
+    }
+
+    .privacy-hero h1 {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 5vw, 3rem);
+        color: var(--ink);
+        margin-bottom: 0.75rem;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+    }
+
+    .privacy-hero-meta {
+        font-size: 0.875rem;
+        color: var(--ink-muted);
+    }
+
+    /* ── Document container ──────────────────────────────────────── */
+    .privacy-container {
+        max-width: 780px;
+        margin: 3rem auto 5rem;
+        padding: 0 2rem;
+    }
+
+    /* ── Section cards ───────────────────────────────────────────── */
+    .privacy-section {
+        background: var(--paper-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 2rem 2.25rem;
+        margin-bottom: 1.25rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .privacy-section:hover {
+        border-color: var(--accent);
+        box-shadow: 0 4px 20px rgba(26, 71, 42, 0.07);
+    }
+
+    .privacy-section-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .privacy-section-num {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        background: var(--accent-light);
+        color: var(--accent);
+        font-size: 0.75rem;
+        font-weight: 700;
+        border-radius: var(--radius-sm);
+        flex-shrink: 0;
+    }
+
+    .privacy-section h2 {
+        font-family: var(--font-display);
+        font-size: 1.2rem;
+        color: var(--ink);
+        margin: 0;
+    }
+
+    .privacy-section p {
+        font-size: 0.9375rem;
+        line-height: 1.75;
+        color: var(--ink-muted);
+        margin-bottom: 0.75rem;
+    }
+
+    .privacy-section ul {
+        padding-left: 1.25rem;
+        margin: 0.5rem 0 0.75rem;
+    }
+
+    .privacy-section li {
+        font-size: 0.9375rem;
+        line-height: 1.75;
+        color: var(--ink-muted);
+        margin-bottom: 0.35rem;
+    }
+
+    .privacy-section li::marker {
+        color: var(--accent);
+    }
+
+    .privacy-section p:last-child,
+    .privacy-section li:last-child {
+        margin-bottom: 0;
+    }
+
+    .privacy-section strong {
+        color: var(--ink-soft);
+        font-weight: 600;
+    }
+
+    .privacy-section a {
+        color: var(--accent);
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .privacy-section a:hover {
+        text-decoration: underline;
+    }
+
+    /* ── Highlight pill (used for data-type tags) ────────────────── */
+    .data-tag {
+        display: inline-block;
+        background: var(--accent-light);
+        color: var(--accent);
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.15rem 0.6rem;
+        border-radius: 999px;
+        margin: 0.1rem 0.15rem;
+        vertical-align: middle;
+    }
+
+    /* ── Contact card ────────────────────────────────────────────── */
+    .privacy-contact {
+        background: var(--accent-light);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 2rem 2.25rem;
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .privacy-contact p {
+        font-size: 0.9375rem;
+        color: var(--ink-muted);
+        margin-bottom: 0.5rem;
+    }
+
+    .privacy-contact a {
+        color: var(--accent);
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 1rem;
+    }
+
+    .privacy-contact a:hover {
+        text-decoration: underline;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+        .privacy-hero { padding: 3rem 1rem 2rem; }
+        .privacy-container { padding: 0 1rem; }
+        .privacy-section { padding: 1.5rem 1.25rem; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero ─────────────────────────────────────────────────────── -->
+<section class="privacy-hero">
+    <div class="privacy-badge">Legal</div>
+    <h1>Privacy Policy</h1>
+    <p class="privacy-hero-meta">Last updated: June 2026 &nbsp;·&nbsp; Effective immediately upon use</p>
+</section>
+
+<!-- ── Document body ─────────────────────────────────────────────── -->
+<div class="privacy-container">
+
+    <!-- Intro -->
+    <div class="privacy-section">
+        <p>
+            At Spendly, your privacy is important to us. This Privacy Policy explains what
+            information we collect when you use our personal expense tracking service, how
+            we use it, and the steps we take to keep it safe. By using Spendly, you agree
+            to the practices described in this policy.
+        </p>
+    </div>
+
+    <!-- 1. Data We Collect -->
+    <div class="privacy-section">
+        <div class="privacy-section-header">
+            <span class="privacy-section-num">1</span>
+            <h2>Data We Collect</h2>
+        </div>
+        <p>We collect only the information necessary to provide the Service. This falls into two categories:</p>
+        <p><strong>Account information</strong> — provided when you register:</p>
+        <ul>
+            <li><span class="data-tag">Username</span> used to identify your account.</li>
+            <li><span class="data-tag">Password</span> stored as a secure hash — we never store plain-text passwords.</li>
+        </ul>
+        <p><strong>Expense data</strong> — entered by you while using the app:</p>
+        <ul>
+            <li><span class="data-tag">Amount</span> the value of each expense.</li>
+            <li><span class="data-tag">Category</span> e.g. Food, Bills, Transport.</li>
+            <li><span class="data-tag">Date</span> when the expense occurred.</li>
+            <li><span class="data-tag">Description</span> an optional note you add.</li>
+        </ul>
+        <p>
+            We do <strong>not</strong> collect payment card details, bank account numbers,
+            government IDs, or any sensitive financial credentials.
+        </p>
+    </div>
+
+    <!-- 2. How We Use Your Data -->
+    <div class="privacy-section">
+        <div class="privacy-section-header">
+            <span class="privacy-section-num">2</span>
+            <h2>How We Use Your Data</h2>
+        </div>
+        <p>The information we collect is used solely to operate and improve Spendly:</p>
+        <ul>
+            <li><strong>Provide the Service</strong> — authenticate your account and display your personal expense history.</li>
+            <li><strong>Generate insights</strong> — calculate category totals, monthly summaries, and spending trends shown within the app.</li>
+            <li><strong>Maintain security</strong> — detect and prevent unauthorised access or abuse.</li>
+            <li><strong>Improve the app</strong> — understand general usage patterns (never tied to individual identities) to make Spendly better.</li>
+        </ul>
+        <p>
+            We will never use your data for advertising, profiling, or automated decision-making
+            that affects your rights.
+        </p>
+    </div>
+
+    <!-- 3. Data Storage & Security -->
+    <div class="privacy-section">
+        <div class="privacy-section-header">
+            <span class="privacy-section-num">3</span>
+            <h2>Data Storage &amp; Security</h2>
+        </div>
+        <p>
+            Your data is stored in a local SQLite database on the server or device where
+            Spendly is running. We apply the following safeguards:
+        </p>
+        <ul>
+            <li><strong>Password hashing:</strong> All passwords are hashed using a modern one-way algorithm before storage.</li>
+            <li><strong>Session management:</strong> User sessions are managed securely with expiry controls.</li>
+            <li><strong>Access controls:</strong> Only you can view or modify your own expense records.</li>
+            <li><strong>No cloud sync:</strong> Data is not transmitted to external cloud services unless explicitly configured by the host.</li>
+        </ul>
+        <p>
+            While we take reasonable precautions, no method of data storage or transmission
+            over the internet is 100% secure. We cannot guarantee absolute security.
+        </p>
+        <p>
+            <strong>Data retention:</strong> Your data is retained for as long as your account
+            exists. You may request deletion at any time (see <em>Contact Us</em> below).
+        </p>
+    </div>
+
+    <!-- 4. Third-Party Services -->
+    <div class="privacy-section">
+        <div class="privacy-section-header">
+            <span class="privacy-section-num">4</span>
+            <h2>Third-Party Services</h2>
+        </div>
+        <p>Spendly uses a small number of third-party services solely to deliver the user interface:</p>
+        <ul>
+            <li>
+                <strong>Google Fonts</strong> — fonts (DM Serif Display, DM Sans) are loaded from
+                <a href="https://fonts.google.com" target="_blank" rel="noopener">fonts.googleapis.com</a>.
+                Google's standard font-serving logs may apply. No personal data from your Spendly account
+                is shared with Google.
+            </li>
+        </ul>
+        <p>
+            We do <strong>not</strong> integrate analytics platforms (e.g. Google Analytics),
+            advertising networks, social media trackers, or any other third-party data brokers.
+        </p>
+        <p>
+            If third-party integrations are added in the future, this policy will be updated and
+            users notified in advance.
+        </p>
+    </div>
+
+    <!-- 5. Your Rights -->
+    <div class="privacy-section">
+        <div class="privacy-section-header">
+            <span class="privacy-section-num">5</span>
+            <h2>Your Rights</h2>
+        </div>
+        <p>You have the following rights with respect to your personal data:</p>
+        <ul>
+            <li><strong>Access:</strong> Request a copy of the data we hold about you.</li>
+            <li><strong>Correction:</strong> Ask us to correct inaccurate data.</li>
+            <li><strong>Deletion:</strong> Request that your account and all associated data be permanently deleted.</li>
+            <li><strong>Portability:</strong> Request your expense data in a machine-readable format.</li>
+            <li><strong>Objection:</strong> Object to any processing of your data that you believe is unlawful.</li>
+        </ul>
+        <p>
+            To exercise any of these rights, contact us using the details in the
+            <em>Contact Us</em> section below. We will respond within 30 days.
+        </p>
+    </div>
+
+    <!-- 6. Changes to This Policy -->
+    <div class="privacy-section">
+        <div class="privacy-section-header">
+            <span class="privacy-section-num">6</span>
+            <h2>Changes to This Policy</h2>
+        </div>
+        <p>
+            We may update this Privacy Policy from time to time to reflect changes in the
+            Service or applicable law. When we do, we will update the "Last updated" date
+            at the top of this page.
+        </p>
+        <p>
+            Significant changes will be communicated via an in-app notice or email where
+            reasonably practicable. Continued use of Spendly after changes are posted
+            constitutes your acceptance of the revised policy.
+        </p>
+    </div>
+
+    <!-- Contact card -->
+    <div class="privacy-contact">
+        <p>Questions or requests about your data?</p>
+        <a href="mailto:support@spendly.app">support@spendly.app</a>
+    </div>
+
+</div>
+
+{% endblock %}
