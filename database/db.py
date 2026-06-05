@@ -23,7 +23,17 @@ def get_db():
     - row_factory = sqlite3.Row    (column-name access: row["amount"])
     - PRAGMA foreign_keys = ON     (must be set per connection in SQLite)
     """
-    conn = sqlite3.connect(DB_PATH)
+    # Allow overriding the database path via environment variable or Flask app config.
+    db_path = os.environ.get("DATABASE")
+    if not db_path:
+        try:
+            # Import here to avoid module-level Flask dependency during imports.
+            from flask import current_app
+            db_path = current_app.config.get("DATABASE") if current_app and current_app.config.get("DATABASE") else DB_PATH
+        except Exception:
+            db_path = DB_PATH
+
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
