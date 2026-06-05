@@ -17,9 +17,9 @@ Spendly is built as a step-by-step progressive learning application. Below is th
 | **Step 4: User Profile** | User statistics summary card, transaction count, and category spending breakdown. | ✅ Complete |
 | **Step 5–6: Dashboard & Listing** | Unified dashboard showing paginated expense list, text search, and category filter. | ✅ Complete |
 | **Step 7 Feature Add-on** | Profile page date-range filter (preset filters & custom picker). | ✅ Complete |
-| **Step 7: Add Expense** | Add expense forms and server-side submission validation. | 🔲 Coming Soon |
-| **Step 8: Edit Expense** | Modify existing transactions. | 🔲 Coming Soon |
-| **Step 9: Delete Expense** | Safe transaction deletion. | 🔲 Coming Soon |
+| **Step 7: Add Expense** | Interactive add-expense forms with input validations and category routing. | ✅ Complete |
+| **Step 8: Edit Expense** | Full transaction editing interface for modifying existing logged expenses. | ✅ Complete |
+| **Step 9: Delete Expense** | Safe deletion operations to remove expenses from the user's registry. | ✅ Complete |
 
 ---
 
