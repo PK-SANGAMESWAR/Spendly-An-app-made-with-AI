@@ -168,7 +168,11 @@ def dashboard():
     # --- query ---
     stats      = get_extended_summary_stats(user_id)
     user       = get_user_by_id(user_id)
+    if not user:
+        flash("User not found.", "error")
+        return redirect(url_for("logout"))
     categories = get_category_breakdown(user_id)
+
     count      = get_filtered_expenses_count(user_id, q, category)
     total_pages = max(1, math.ceil(count / PAGE_SIZE))
     page        = min(page, total_pages)

@@ -43,7 +43,7 @@
                 <i data-lucide="tag" class="stat-icon text-muted"></i>
             </div>
             <span class="stat-value">
-                <span class="badge badge-{{ stats.top_category | lower }}">{{ stats.top_category }}</span>
+                <span class="badge badge-{{ stats.top_category | lower | replace(' ', '-') }}">{{ stats.top_category }}</span>
             </span>
         </div>
     </section>
@@ -67,7 +67,7 @@
                         </div>
                         <div class="progress-bar-container">
                             <div class="progress-bar-track">
-                                <div class="progress-bar-fill fill-{{ cat.name|lower }}" style="width: {{ cat.pct }}%;"></div>
+                                <div class="progress-bar-fill fill-{{ cat.name | lower | replace(' ', '-') }}" style="width: {{ cat.pct }}%;"></div>
                             </div>
                             <span class="progress-percentage text-tabular">{{ cat.pct }}%</span>
                         </div>
@@ -132,7 +132,7 @@
                                 <td class="text-tabular text-muted">{{ expense.date }}</td>
                                 <td class="desc-cell">{{ expense.description }}</td>
                                 <td>
-                                    <span class="badge badge-{{ expense.category | lower }}">{{ expense.category }}</span>
+                                    <span class="badge badge-{{ expense.category | lower | replace(' ', '-') }}">{{ expense.category }}</span>
                                 </td>
                                 <td class="text-right text-tabular text-bold">{{ expense.amount | inr }}</td>
                                 <td class="text-center actions-cell">
