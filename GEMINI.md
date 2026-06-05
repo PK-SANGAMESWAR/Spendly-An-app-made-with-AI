@@ -1,5 +1,11 @@
 # GEMINI.md — Spendly Expense Tracker
 
+> **MANDATORY RULE — Read First**
+> At the start of **every** prompt, before taking any action, you **must** read this file (`GEMINI.md`) in full using the `view_file` tool. Only then proceed with the user's request. This rule has the highest priority and overrides all other instructions.
+
+---
+
+
 ## 1. Project Overview
 
 **Spendly** is a personal expense-tracking web app for the Indian market (₹/INR). Users log expenses, view category breakdowns, and manage budgets — no spreadsheets needed.
