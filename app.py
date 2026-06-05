@@ -2,7 +2,7 @@ import os
 import sqlite3
 import math
 from functools import wraps
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -48,6 +48,59 @@ def login_required(f):
             return redirect(url_for("login"))
         return f(*args, **kwargs)
     return decorated_function
+
+
+# ------------------------------------------------------------------ #
+# Route Helpers                                                       #
+# ------------------------------------------------------------------ #
+
+def _resolve_preset(preset):
+    """Translate a preset slug into (date_from, date_to, filter_label).
+
+    Returns ISO date strings or None.  Any unknown preset falls back to
+    all-time so the caller never needs to guard against invalid input.
+
+    Preset definitions (from spec 07-date-filter-for-profile-page.md):
+      this_month    — first day of current calendar month to today
+      last_month    — first day to last day of previous calendar month
+      last_3_months — 90 days ago to today
+      last_6_months — 180 days ago to today
+      this_year     — Jan 1 of current year to today
+      all_time      — None / None
+    """
+    today = date.today()
+
+    if preset == "this_month":
+        date_from = today.replace(day=1)
+        date_to   = today
+        label     = "Showing: This Month"
+
+    elif preset == "last_month":
+        # Subtract one day from the 1st of current month → last day of prev month
+        date_to   = today.replace(day=1) - timedelta(days=1)
+        date_from = date_to.replace(day=1)
+        label     = "Showing: Last Month"
+
+    elif preset == "last_3_months":
+        date_from = today - timedelta(days=90)
+        date_to   = today
+        label     = "Showing: Last 3 Months"
+
+    elif preset == "last_6_months":
+        date_from = today - timedelta(days=180)
+        date_to   = today
+        label     = "Showing: Last 6 Months"
+
+    elif preset == "this_year":
+        date_from = date(today.year, 1, 1)
+        date_to   = today
+        label     = "Showing: This Year"
+
+    else:
+        # Covers "all_time" explicitly and any unknown / missing value
+        return None, None, "Showing: All Time"
+
+    return date_from.isoformat(), date_to.isoformat(), label
 
 
 # ------------------------------------------------------------------ #
@@ -194,25 +247,72 @@ def logout():
     return redirect(url_for("landing"))
 
 
+
+
 @app.route("/profile")
 @login_required
 def profile():
-    user_id = session["user_id"]
+    user_id   = session["user_id"]
     user_info = get_user_by_id(user_id)
     if not user_info:
         flash("User profile not found.", "error")
         return redirect(url_for("logout"))
-    
-    stats = get_summary_stats(user_id)
-    initials = ''.join(w[0].upper() for w in user_info['name'].split()[:2])
+
+    # ---- User card data (never date-filtered) ----
+    initials     = ''.join(w[0].upper() for w in user_info['name'].split()[:2])
     member_since = user_info["member_since"]
-    
+
+    # ---- Parse filter query params ----
+    preset       = request.args.get("preset",    "").strip()
+    date_from_raw = request.args.get("date_from", "").strip()
+    date_to_raw   = request.args.get("date_to",   "").strip()
+
+    # ---- Resolve active date range and display label ----
+    if preset:
+        # Preset wins over custom range when both are present
+        date_from, date_to, filter_label = _resolve_preset(preset)
+    elif date_from_raw and date_to_raw:
+        # Validate both strings are proper ISO dates before accepting the custom range.
+        # Invalid formats (e.g. ?date_from=not-a-date) silently fall back to all-time
+        # so the page always renders sensibly without exposing an error page.
+        try:
+            datetime.strptime(date_from_raw, "%Y-%m-%d")
+            datetime.strptime(date_to_raw,   "%Y-%m-%d")
+            date_from    = date_from_raw
+            date_to      = date_to_raw
+            filter_label = f"Showing: {date_from} to {date_to}"
+        except ValueError:
+            date_from    = None
+            date_to      = None
+            filter_label = "Showing: All Time"
+    else:
+        # Partial range (or no filter) — fall back to all-time silently
+        date_from    = None
+        date_to      = None
+        filter_label = "Showing: All Time"
+
+    # Explicit boolean so the template doesn't need to re-derive filter state
+    is_all_time = date_from is None and date_to is None
+
+    # ---- Fetch stats (date-filtered) ----
+    stats      = get_summary_stats(user_id, date_from=date_from, date_to=date_to)
+    categories = get_category_breakdown(user_id, date_from=date_from, date_to=date_to)
+    recent     = get_recent_transactions(user_id, date_from=date_from, date_to=date_to)
+
     return render_template(
         "profile.html",
         user=user_info,
         stats=stats,
+        categories=categories,
+        recent=recent,
         initials=initials,
-        member_since=member_since
+        member_since=member_since,
+        # --- filter state (passed back so form stays in sync) ---
+        preset=preset,
+        date_from=date_from or "",
+        date_to=date_to or "",
+        filter_label=filter_label,
+        is_all_time=is_all_time,
     )
 
 

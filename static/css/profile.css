@@ -412,3 +412,137 @@
         gap: var(--gap-lg);
     }
 }
+
+
+/* ------------------------------------------------------------------ */
+/* Filter Bar                                                          */
+/* ------------------------------------------------------------------ */
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--gap-md);
+    margin-bottom: var(--gap-lg);
+}
+
+/* The inner form takes up as much room as it needs; flex-wrap lets it
+   reflow on narrow screens without breaking the clear link placement.  */
+#profile-filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--gap-md);
+    flex: 1;
+}
+
+/* Preset quick-pick row */
+.filter-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-sm);
+}
+
+.filter-preset-btn {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--paper-card);
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+}
+
+.filter-preset-btn:hover {
+    background: var(--paper-warm);
+    color: var(--ink);
+    border-color: var(--border-soft);
+}
+
+/* Active state: filled with accent colour */
+.filter-preset-btn.active {
+    background: var(--accent);
+    color: var(--paper);
+    border-color: var(--accent);
+}
+
+.filter-preset-btn.active:hover {
+    background: var(--accent-light);
+    border-color: var(--accent-light);
+}
+
+/* Custom date range row */
+.filter-custom-range {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--gap-sm);
+}
+
+.filter-date-input {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--paper-card);
+    color: var(--ink);
+    cursor: pointer;
+}
+
+.filter-date-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-light);
+}
+
+.filter-range-sep {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+}
+
+.filter-apply-btn {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--paper);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+}
+
+.filter-apply-btn:hover {
+    background: var(--accent-light);
+    border-color: var(--accent-light);
+}
+
+/* Clear link — sits outside the form */
+.filter-clear-link {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    white-space: nowrap;
+    transition: color 0.15s ease;
+}
+
+.filter-clear-link:hover {
+    color: var(--ink);
+}
+
+/* Active filter label displayed above the stats grid */
+.filter-active-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    margin-bottom: var(--gap-sm);
+    letter-spacing: 0.02em;
+}
