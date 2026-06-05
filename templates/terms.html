@@ -1,0 +1,345 @@
+{% extends "base.html" %}
+
+{% block title %}Terms and Conditions — Spendly{% endblock %}
+
+{% block head %}
+<style>
+    /* ── Terms page hero ─────────────────────────────────────────── */
+    .terms-hero {
+        background: var(--paper-warm);
+        border-bottom: 1px solid var(--border);
+        padding: 4rem 2rem 3rem;
+        text-align: center;
+    }
+
+    .terms-badge {
+        display: inline-block;
+        background: var(--accent-light);
+        color: var(--accent);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.35rem 0.85rem;
+        border-radius: 999px;
+        margin-bottom: 1.25rem;
+    }
+
+    .terms-hero h1 {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 5vw, 3rem);
+        color: var(--ink);
+        margin-bottom: 0.75rem;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+    }
+
+    .terms-hero-meta {
+        font-size: 0.875rem;
+        color: var(--ink-muted);
+    }
+
+    /* ── Document container ──────────────────────────────────────── */
+    .terms-container {
+        max-width: 780px;
+        margin: 3rem auto 5rem;
+        padding: 0 2rem;
+    }
+
+    /* ── Section cards ───────────────────────────────────────────── */
+    .terms-section {
+        background: var(--paper-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 2rem 2.25rem;
+        margin-bottom: 1.25rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .terms-section:hover {
+        border-color: var(--accent);
+        box-shadow: 0 4px 20px rgba(26, 71, 42, 0.07);
+    }
+
+    .terms-section-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .terms-section-num {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        background: var(--accent-light);
+        color: var(--accent);
+        font-size: 0.75rem;
+        font-weight: 700;
+        border-radius: var(--radius-sm);
+        flex-shrink: 0;
+    }
+
+    .terms-section h2 {
+        font-family: var(--font-display);
+        font-size: 1.2rem;
+        color: var(--ink);
+        margin: 0;
+    }
+
+    .terms-section p {
+        font-size: 0.9375rem;
+        line-height: 1.75;
+        color: var(--ink-muted);
+        margin-bottom: 0.75rem;
+    }
+
+    .terms-section ul {
+        padding-left: 1.25rem;
+        margin: 0.5rem 0 0.75rem;
+    }
+
+    .terms-section li {
+        font-size: 0.9375rem;
+        line-height: 1.75;
+        color: var(--ink-muted);
+        margin-bottom: 0.35rem;
+    }
+
+    .terms-section li::marker {
+        color: var(--accent);
+    }
+
+    .terms-section p:last-child,
+    .terms-section li:last-child {
+        margin-bottom: 0;
+    }
+
+    .terms-section strong {
+        color: var(--ink-soft);
+        font-weight: 600;
+    }
+
+    .terms-section a {
+        color: var(--accent);
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .terms-section a:hover {
+        text-decoration: underline;
+    }
+
+    /* ── Contact card ────────────────────────────────────────────── */
+    .terms-contact {
+        background: var(--accent-light);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 2rem 2.25rem;
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .terms-contact p {
+        font-size: 0.9375rem;
+        color: var(--ink-muted);
+        margin-bottom: 0.5rem;
+    }
+
+    .terms-contact a {
+        color: var(--accent);
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 1rem;
+    }
+
+    .terms-contact a:hover {
+        text-decoration: underline;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+        .terms-hero { padding: 3rem 1rem 2rem; }
+        .terms-container { padding: 0 1rem; }
+        .terms-section { padding: 1.5rem 1.25rem; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero ─────────────────────────────────────────────────────── -->
+<section class="terms-hero">
+    <div class="terms-badge">Legal</div>
+    <h1>Terms &amp; Conditions</h1>
+    <p class="terms-hero-meta">Last updated: June 2026 &nbsp;·&nbsp; Effective immediately upon use</p>
+</section>
+
+<!-- ── Document body ─────────────────────────────────────────────── -->
+<div class="terms-container">
+
+    <!-- 1. Acceptance of Terms -->
+    <div class="terms-section">
+        <div class="terms-section-header">
+            <span class="terms-section-num">1</span>
+            <h2>Acceptance of Terms</h2>
+        </div>
+        <p>
+            By accessing or using Spendly ("the App," "Service," "we," "us," or "our"),
+            you agree to be bound by these Terms and Conditions ("Terms"). Please read them
+            carefully before using the Service.
+        </p>
+        <p>
+            If you do not agree with any part of these Terms, you must not use the App.
+            Your continued use of Spendly constitutes your ongoing acceptance of these Terms
+            and any future amendments.
+        </p>
+        <p>
+            These Terms apply to all visitors, registered users, and any other persons who
+            access or use the Service.
+        </p>
+    </div>
+
+    <!-- 2. Use of Service -->
+    <div class="terms-section">
+        <div class="terms-section-header">
+            <span class="terms-section-num">2</span>
+            <h2>Use of Service</h2>
+        </div>
+        <p>
+            Spendly is a personal expense tracking tool designed to help individuals log,
+            categorise, and review their spending. You agree to use the Service only for
+            its intended purpose and in compliance with all applicable laws and regulations.
+        </p>
+        <p>You must <strong>not</strong>:</p>
+        <ul>
+            <li>Use the Service for any unlawful, fraudulent, or malicious purpose.</li>
+            <li>Attempt to gain unauthorised access to any part of the Service or its servers.</li>
+            <li>Upload or transmit any viruses, malware, or other harmful code.</li>
+            <li>Scrape, harvest, or collect data from the Service without express written consent.</li>
+            <li>Use another person's account without their explicit permission.</li>
+            <li>Interfere with or disrupt the integrity or performance of the Service.</li>
+        </ul>
+        <p>
+            We reserve the right to suspend or terminate your account at our sole discretion
+            if we reasonably believe you have violated these Terms.
+        </p>
+    </div>
+
+    <!-- 3. User Data & Privacy -->
+    <div class="terms-section">
+        <div class="terms-section-header">
+            <span class="terms-section-num">3</span>
+            <h2>User Data &amp; Privacy</h2>
+        </div>
+        <p>
+            By using Spendly, you may submit personal financial information such as expense
+            amounts, categories, dates, and descriptions ("User Data"). You retain full
+            ownership of your User Data.
+        </p>
+        <p>We handle your data as follows:</p>
+        <ul>
+            <li><strong>Storage:</strong> Data is stored within the application database on the device or server where Spendly is hosted.</li>
+            <li><strong>No third-party sharing:</strong> We do not sell, rent, or share your financial data with third parties for marketing purposes.</li>
+            <li><strong>Security:</strong> We take reasonable technical measures to protect your data; however, no method of storage is 100% secure.</li>
+            <li><strong>Deletion:</strong> You may request deletion of your account and associated data at any time by contacting us.</li>
+        </ul>
+        <p>
+            For full details, please refer to our
+            <a href="#">Privacy Policy</a>.
+        </p>
+    </div>
+
+    <!-- 4. Intellectual Property -->
+    <div class="terms-section">
+        <div class="terms-section-header">
+            <span class="terms-section-num">4</span>
+            <h2>Intellectual Property</h2>
+        </div>
+        <p>
+            All content, design, code, trademarks, logos, and other materials forming part
+            of Spendly — excluding your User Data — are the intellectual property of Spendly
+            and its developers, protected by applicable copyright and intellectual property laws.
+        </p>
+        <p>
+            You are granted a limited, non-exclusive, non-transferable licence to access and
+            use the Service for personal, non-commercial purposes. You may not copy, modify,
+            distribute, sell, or create derivative works from any part of the Service without
+            our prior written consent.
+        </p>
+    </div>
+
+    <!-- 5. Limitation of Liability -->
+    <div class="terms-section">
+        <div class="terms-section-header">
+            <span class="terms-section-num">5</span>
+            <h2>Limitation of Liability</h2>
+        </div>
+        <p>
+            Spendly is provided on an <strong>"as is" and "as available"</strong> basis,
+            without warranties of any kind — express or implied — including warranties of
+            merchantability, fitness for a particular purpose, or non-infringement.
+        </p>
+        <p>
+            To the maximum extent permitted by applicable law, Spendly and its developers
+            shall not be liable for any indirect, incidental, special, or consequential damages,
+            including but not limited to:
+        </p>
+        <ul>
+            <li>Loss of profits, revenue, or data.</li>
+            <li>Financial decisions made based on information displayed in the App.</li>
+            <li>Service interruptions, errors, or inaccuracies in calculations.</li>
+            <li>Unauthorised access to or alteration of your data.</li>
+        </ul>
+        <p>
+            Spendly is a personal finance <em>tracking</em> tool and does not constitute
+            financial advice. Always consult a qualified financial professional for important
+            money-related decisions.
+        </p>
+    </div>
+
+    <!-- 6. Changes to Terms -->
+    <div class="terms-section">
+        <div class="terms-section-header">
+            <span class="terms-section-num">6</span>
+            <h2>Changes to Terms</h2>
+        </div>
+        <p>
+            We reserve the right to update or modify these Terms at any time. When we do,
+            we will revise the "Last updated" date at the top of this page.
+        </p>
+        <p>
+            Significant changes will be communicated via an in-app notice or by email where
+            reasonably practicable. Your continued use of Spendly after any changes take effect
+            constitutes your acceptance of the revised Terms.
+        </p>
+        <p>
+            We encourage you to review this page periodically to stay informed about how we
+            protect your information and what rules govern your use of the Service.
+        </p>
+    </div>
+
+    <!-- 7. Governing Law -->
+    <div class="terms-section">
+        <div class="terms-section-header">
+            <span class="terms-section-num">7</span>
+            <h2>Governing Law</h2>
+        </div>
+        <p>
+            These Terms shall be governed by and construed in accordance with the laws of India,
+            without regard to conflict of law provisions. Any disputes arising under these Terms
+            shall be subject to the exclusive jurisdiction of the courts located in India.
+        </p>
+    </div>
+
+    <!-- Contact card -->
+    <div class="terms-contact">
+        <p>Have questions about these Terms?</p>
+        <a href="mailto:support@spendly.app">support@spendly.app</a>
+    </div>
+
+</div>
+
+{% endblock %}
