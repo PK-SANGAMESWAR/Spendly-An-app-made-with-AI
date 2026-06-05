@@ -1,0 +1,17 @@
+/* ==========================================================================
+   Page-Specific Styles: Login
+   ========================================================================== */
+
+/* 
+   Most auth styling is defined globally in static/css/style.css 
+   under the 'Auth pages' section. This file is page-scoped for any 
+   future overrides unique to the login page.
+*/
+
+/* Example: Focus state enhancement or subtle login-only modifications */
+.login-header-icon {
+    font-size: 2rem;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 1rem;
+}

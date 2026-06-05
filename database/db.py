@@ -93,7 +93,7 @@ def seed_db():
             return
 
         # --- Demo user ---
-        password_hash = generate_password_hash("demo123")
+        password_hash = generate_password_hash("demo123", method="pbkdf2:sha256")
         cursor.execute(
             "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
             ("Demo User", "demo@spendly.com", password_hash),

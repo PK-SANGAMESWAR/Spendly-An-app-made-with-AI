@@ -2,9 +2,9 @@ import os
 import sqlite3
 
 from flask import Flask, render_template, request, flash, redirect, url_for, session
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
-from database.db import get_db, init_db, seed_db, create_user
+from database.db import get_db, init_db, seed_db, create_user, get_user_by_email
 
 app = Flask(__name__)
 
@@ -66,7 +66,7 @@ def register():
 
     # ---- Write to DB ----
     try:
-        pw_hash = generate_password_hash(password)
+        pw_hash = generate_password_hash(password, method="pbkdf2:sha256")
         create_user(name, email, pw_hash)
         flash("Account created! Please log in.", "success")
         return redirect(url_for("login"))
@@ -75,9 +75,37 @@ def register():
         return render_template("register.html", name=name, email=email)
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+    # Already-logged-in guard — redirect authenticated users away from this page
+    if session.get("user_id"):
+        return redirect(url_for("dashboard"))
+
+    if request.method == "GET":
+        return render_template("login.html", email="")
+
+    # ---- POST: collect submitted values ----
+    email    = request.form.get("email", "").strip()
+    password = request.form.get("password", "")
+
+    # ---- Validate: both fields must be non-empty ----
+    if not email or not password:
+        flash("Email and password are required.", "error")
+        return render_template("login.html", email=email)
+
+    # ---- Look up user and verify password ----
+    user = get_user_by_email(email)
+    if user is None or not check_password_hash(user["password_hash"], password):
+        # Single generic message — prevents user enumeration
+        flash("Invalid email or password.", "error")
+        return render_template("login.html", email=email)
+
+    # ---- Success: write session and redirect ----
+    session.clear()
+    session["user_id"]   = user["id"]
+    session["user_name"] = user["name"]
+    flash(f"Welcome back, {user['name']}!", "success")
+    return redirect(url_for("dashboard"))
 
 
 @app.route("/terms")
@@ -101,7 +129,9 @@ def dashboard():
 
 @app.route("/logout")
 def logout():
-    return "Logout — coming in Step 3"
+    session.clear()
+    flash("You have been signed out.", "info")
+    return redirect(url_for("landing"))
 
 
 @app.route("/profile")

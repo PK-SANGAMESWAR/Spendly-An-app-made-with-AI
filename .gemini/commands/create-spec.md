@@ -5,7 +5,7 @@ allowed-tools: Read, Write, Glob, Bash(git:*)
 ---
 
 You are a senior developer spinning up a new feature for the
-Spendly expense tracker. Always follow the rules in CLAUDE.md.
+Spendly expense tracker. Always follow the rules in GEMINI.md.
 
 User input: $ARGUMENTS
 
@@ -44,8 +44,10 @@ If `branch_name` is already taken, append a number:
 Run:
 ```
 git checkout main
-git pull origin main
+git pull origin main 2>/dev/null || echo "Could not pull from origin — continuing with local main"
 ```
+If the pull fails (offline, no remote configured, etc.) print a
+notice but **continue** — do not abort the command.
 
 ## Step 5 — Create and switch to the feature branch
 Run:
@@ -60,8 +62,25 @@ Read these files before writing the spec:
 - `database/db.py` — existing schema and functions
 - All files in `.gemini/specs/` — avoid duplicating existing specs
 
-Check `GEMINI.md` to confirm the requested step is not already
-marked complete. If it is, warn the user and stop.
+Validate `step_number` against the roadmap table in `GEMINI.md`:
+- If the step number does **not** appear in the table, warn the user
+  ("Step N does not exist in the GEMINI.md roadmap") and **stop**.
+- If the step is already marked ✅ Done, warn the user and **stop**.
+
+## Step 6.5 — Identify what already exists
+Before writing the spec, scan the codebase for anything the new
+feature can reuse:
+- **`database/db.py`** — list helper functions already present
+  (e.g. `get_db`, `get_user_by_email`) that this feature will call.
+- **`app.py`** — list any existing routes, decorators, or utilities
+  relevant to this feature.
+- **`templates/`** — list any existing templates or partials
+  (e.g. `base.html` blocks) this feature builds on.
+- **`static/css/style.css`** — note CSS custom properties or
+  component classes already defined that the new page should use.
+
+Record your findings; they will populate the **Reuses** section
+of the spec (Step 7). If nothing is reusable, write "Nothing to reuse".
 
 ## Step 7 — Write the spec
 Generate a spec document with this exact structure:
@@ -81,6 +100,13 @@ Every new route needed:
 - `METHOD /path` — description — access level (public/logged-in)
 
 If no new routes: state "No new routes".
+
+## Reuses
+Existing code this feature calls or extends — populated from
+Step 6.5 research. List each item as:
+- `file` — function / class / route / CSS token — how it is used
+
+If nothing is reused: state "Nothing to reuse".
 
 ## Database changes
 Any new tables, columns, or constraints needed.
