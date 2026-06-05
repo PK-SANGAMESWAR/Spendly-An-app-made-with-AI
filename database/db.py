@@ -123,3 +123,44 @@ def seed_db():
         conn.commit()
     finally:
         conn.close()
+
+
+# ------------------------------------------------------------------ #
+# User helpers                                                        #
+# ------------------------------------------------------------------ #
+
+def create_user(name, email, password_hash):
+    """Insert a new user row and return the new user id (int).
+
+    Raises sqlite3.IntegrityError if the email already exists (UNIQUE
+    constraint on users.email).  The caller is responsible for catching
+    this and showing the user a meaningful error message.
+
+    Uses a parameterised query -- never string-format SQL.
+    """
+    conn = get_db()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
+            (name, email, password_hash),
+        )
+        conn.commit()
+        return cursor.lastrowid
+    finally:
+        conn.close()
+
+
+def get_user_by_email(email):
+    """Return the sqlite3.Row for the user with the given email, or None.
+
+    Used here to pre-check duplicates before a DB write, and reused by
+    the login route (Step 3) for credential verification.
+    """
+    conn = get_db()
+    try:
+        return conn.execute(
+            "SELECT * FROM users WHERE email = ?", (email,)
+        ).fetchone()
+    finally:
+        conn.close()

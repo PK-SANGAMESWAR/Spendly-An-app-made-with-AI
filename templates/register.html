@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Create account — Spendly{% endblock %}
+{% block title %}Spendly — Create Account{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+{% endblock %}
 
 {% block content %}
 
@@ -13,30 +17,72 @@
         </div>
 
         <div class="auth-card">
-            {% if error %}
-            <div class="auth-error">{{ error }}</div>
-            {% endif %}
+            <form method="POST" action="/register" novalidate>
 
-            <form method="POST" action="/register">
                 <div class="form-group">
                     <label for="name">Full name</label>
-                    <input type="text" id="name" name="name"
-                           class="form-input" placeholder="Nitish Kumar"
-                           required autofocus>
+                    <input type="text"
+                           id="name"
+                           name="name"
+                           class="form-input"
+                           placeholder="Name"
+                           value="{{ name or '' }}"
+                           autocomplete="name"
+                           required
+                           autofocus>
                 </div>
+
                 <div class="form-group">
                     <label for="email">Email address</label>
-                    <input type="email" id="email" name="email"
-                           class="form-input" placeholder="nitish@example.com"
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           class="form-input"
+                           placeholder="nitish@example.com"
+                           value="{{ email or '' }}"
+                           autocomplete="email"
                            required>
                 </div>
+
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password"
-                           class="form-input" placeholder="Min. 8 characters"
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           class="form-input"
+                           placeholder="Min. 8 characters"
+                           autocomplete="new-password"
+                           minlength="8"
+                           required>
+                    <p class="form-hint">Must be at least 8 characters</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password">Confirm password</label>
+                    <input type="password"
+                           id="confirm_password"
+                           name="confirm_password"
+                           class="form-input"
+                           placeholder="Repeat your password"
+                           autocomplete="new-password"
                            required>
                 </div>
+
+                <div class="form-group terms-group">
+                    <input type="checkbox"
+                           id="agree_terms"
+                           name="agree_terms"
+                           required>
+                    <label for="agree_terms" class="terms-label">
+                        I agree to the
+                        <a href="{{ url_for('terms') }}">Terms and Conditions</a>
+                        and
+                        <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+                    </label>
+                </div>
+
                 <button type="submit" class="btn-submit">Create account</button>
+
             </form>
         </div>
 

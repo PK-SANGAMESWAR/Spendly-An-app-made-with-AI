@@ -1,0 +1,80 @@
+/* ------------------------------------------------------------------ */
+/* register.css — page-scoped styles for the registration form        */
+/* All values reference CSS custom properties from style.css.         */
+/* No hardcoded hex values.                                           */
+/* ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ */
+/* Enhanced card — subtle depth over the base .auth-card              */
+/* ------------------------------------------------------------------ */
+
+.auth-card {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* ------------------------------------------------------------------ */
+/* Form hint — small helper text beneath a field                      */
+/* ------------------------------------------------------------------ */
+
+.form-hint {
+    font-size: 0.775rem;
+    color: var(--ink-faint);
+    margin-top: 0.3rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Terms & conditions checkbox row                                     */
+/* ------------------------------------------------------------------ */
+
+.terms-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+}
+
+.terms-group input[type="checkbox"] {
+    /* Bump the checkbox size and tint it with the brand accent */
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.2rem;       /* Align with the first line of the label */
+    flex-shrink: 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+.terms-label {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    line-height: 1.5;
+    /* Override the block display that .auth-card label inherits */
+    display: inline;
+    font-weight: 400;
+}
+
+.terms-label a {
+    color: var(--accent);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+}
+
+.terms-label a:hover {
+    color: var(--ink);
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive — collapse to full-width on narrow viewports            */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 480px) {
+    .auth-card {
+        border-radius: var(--radius-sm);
+        padding: 1.5rem 1.25rem;
+    }
+
+    .auth-title {
+        font-size: 1.6rem;
+    }
+}
