@@ -318,3 +318,19 @@ def update_expense(expense_id, user_id, amount, category, date, description):
     finally:
         conn.close()
 
+
+def delete_expense(user_id, expense_id):
+    """Delete an expense row. Returns number of rows deleted (0 if none)."""
+    conn = get_db()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            "DELETE FROM expenses WHERE id = ? AND user_id = ?",
+            (expense_id, user_id),
+        )
+        conn.commit()
+        return cursor.rowcount
+    finally:
+        conn.close()
+
+

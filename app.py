@@ -18,6 +18,7 @@ from database.queries import (
     get_filtered_expenses_count,
     get_expense_by_id,
     update_expense,
+    delete_expense as db_delete_expense,
 )
 
 app = Flask(__name__)
@@ -393,9 +394,28 @@ def edit_expense(id):
     return redirect(url_for("dashboard"))
 
 
-@app.route("/expenses/<int:id>/delete")
+@app.route("/expenses/<int:id>/delete", methods=["GET", "POST"])
+@login_required
 def delete_expense(id):
-    return "Delete expense — coming in Step 9"
+    user_id = session.get("user_id")
+
+    # For both GET and POST, we need to verify the expense exists and belongs to the user
+    expense = get_expense_by_id(user_id, id)
+    if expense is None:
+        flash("Expense not found.", "error")
+        return redirect(url_for("dashboard"))
+
+    if request.method == "GET":
+        return render_template("delete_expense.html", expense=expense)
+
+    # POST: perform the deletion
+    rows_deleted = db_delete_expense(user_id, id)
+    if rows_deleted == 0:
+        flash("Expense not found.", "error")
+        return redirect(url_for("dashboard"))
+
+    flash("Expense deleted successfully.", "success")
+    return redirect(url_for("dashboard"))
 
 
 if __name__ == "__main__":
