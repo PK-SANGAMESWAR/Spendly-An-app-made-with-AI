@@ -10,7 +10,7 @@ If no argument is provided, stop immediately and say:
 "Please provide a spec name. Usage: /test-feature 
 <spec-name> e.g. /test-feature backend-connection"
 
-If `.claude/specs/$ARGUMENTS.md` does not exist, stop 
+If `.gemini/specs/$ARGUMENTS.md` does not exist, stop 
 immediately and say:
 "Spec file not found at .claude/specs/$ARGUMENTS.md. 
 Please check the spec name and try again."
@@ -54,7 +54,7 @@ invoke the **test-runner** subagent with the following context:
 - Test file to execute:
   `tests/test_[SPEC_NAME_CONVERTED].py` (same converted name as Step 1)
 - Spec file for context:
-  `.claude/specs/$ARGUMENTS.md`
+  `.gemini/specs/$ARGUMENTS.md`
 - Source files to reference for failure diagnosis:
   - `app.py`
   - `database/db.py`
