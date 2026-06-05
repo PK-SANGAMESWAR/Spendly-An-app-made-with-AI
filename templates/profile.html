@@ -25,6 +25,66 @@
 
     <!-- Main Content Area -->
     <main class="profile-main">
+
+        <!-- Filter Bar -->
+        <section class="filter-bar" aria-label="Date filter">
+            <form method="GET" action="{{ url_for('profile') }}" id="profile-filter-form">
+
+                <!-- Preset quick-picks -->
+                <div class="filter-presets">
+                    <button type="submit" name="preset" value="this_month"
+                            class="filter-preset-btn{% if preset == 'this_month' %} active{% endif %}"
+                            id="preset-this-month">
+                        This Month
+                    </button>
+                    <button type="submit" name="preset" value="last_month"
+                            class="filter-preset-btn{% if preset == 'last_month' %} active{% endif %}"
+                            id="preset-last-month">
+                        Last Month
+                    </button>
+                    <button type="submit" name="preset" value="last_3_months"
+                            class="filter-preset-btn{% if preset == 'last_3_months' %} active{% endif %}"
+                            id="preset-last-3-months">
+                        Last 3 Months
+                    </button>
+                    <button type="submit" name="preset" value="last_6_months"
+                            class="filter-preset-btn{% if preset == 'last_6_months' %} active{% endif %}"
+                            id="preset-last-6-months">
+                        Last 6 Months
+                    </button>
+                    <button type="submit" name="preset" value="this_year"
+                            class="filter-preset-btn{% if preset == 'this_year' %} active{% endif %}"
+                            id="preset-this-year">
+                        This Year
+                    </button>
+                    <button type="submit" name="preset" value="all_time"
+                            class="filter-preset-btn{% if is_all_time %} active{% endif %}"
+                            id="preset-all-time">
+                        All Time
+                    </button>
+                </div>
+
+                <!-- Custom date range -->
+                <div class="filter-custom-range">
+                    <input type="date" name="date_from" id="filter-date-from"
+                           class="filter-date-input" value="{{ date_from }}"
+                           aria-label="From date">
+                    <span class="filter-range-sep">to</span>
+                    <input type="date" name="date_to" id="filter-date-to"
+                           class="filter-date-input" value="{{ date_to }}"
+                           aria-label="To date">
+                    <button type="submit" class="filter-apply-btn" id="filter-apply">Apply</button>
+                </div>
+
+            </form>
+
+            <!-- Clear resets to all-time by navigating to /profile with no query string -->
+            <a href="{{ url_for('profile') }}" class="filter-clear-link" id="filter-clear">Clear</a>
+        </section>
+
+        <!-- Active filter label -->
+        <p class="filter-active-label">{{ filter_label }}</p>
+
         <!-- Summary Stats Row -->
         <div class="stats-grid">
             <div class="profile-card stat-card">
