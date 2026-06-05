@@ -7,6 +7,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from database.db import get_db, init_db, seed_db, create_user, get_user_by_email
+from database.queries import get_recent_transactions, get_user_by_id, get_summary_stats, get_category_breakdown
 
 app = Flask(__name__)
 
@@ -154,33 +155,25 @@ def logout():
 @app.route("/profile")
 @login_required
 def profile():
-    user = {
-        "name": "Demo User",
-        "email": "demo@spendly.com",
-        "created_at": "2026-06-01 10:30:00"
-    }
-    stats = {
-        "total_spent": 5200.00,
-        "transaction_count": 8,
-        "top_category": "Food"
-    }
-    expenses = [
-        {"date": "2026-06-02", "description": "Weekly Groceries", "category": "Food", "amount": 2400.00},
-        {"date": "2026-06-03", "description": "Electricity Bill", "category": "Bills", "amount": 1800.00},
-        {"date": "2026-06-04", "description": "Metro Recharge", "category": "Travel", "amount": 1000.00}
-    ]
-    categories = [
-        {"category": "Food", "amount": 2400.00, "percentage": 46.15},
-        {"category": "Bills", "amount": 1800.00, "percentage": 34.62},
-        {"category": "Travel", "amount": 1000.00, "percentage": 19.23}
-    ]
-    initials = ''.join(w[0].upper() for w in user['name'].split()[:2])
-    created_dt = datetime.strptime(user["created_at"], "%Y-%m-%d %H:%M:%S")
-    member_since = created_dt.strftime("%B %Y")
+    user_id = session["user_id"]
+    user_info = get_user_by_id(user_id)
+    if not user_info:
+        flash("User profile not found.", "error")
+        return redirect(url_for("logout"))
+    
+    stats = get_summary_stats(user_id)
+    
+    # Dynamic expenses fetched by Subagent 1
+    expenses = get_recent_transactions(user_id, limit=10)
+    
+    # Dynamic categories breakdown fetched by Subagent 3
+    categories = get_category_breakdown(user_id)
+    initials = ''.join(w[0].upper() for w in user_info['name'].split()[:2])
+    member_since = user_info["member_since"]
     
     return render_template(
         "profile.html",
-        user=user,
+        user=user_info,
         stats=stats,
         expenses=expenses,
         categories=categories,

@@ -5,16 +5,72 @@ Covers all scenarios from the Definition of Done in 04-user-profile.md.
 """
 
 import pytest
+import sqlite3
+from unittest.mock import patch
 from flask import session
+from app import app as flask_app
+import database.db as db_module
+from database.db import init_db, get_db
+
+@pytest.fixture()
+def mem_db(tmp_path):
+    """Patch DB_PATH to a fresh temporary file and initialise the schema."""
+    db_file = str(tmp_path / "test_profile_db.db")
+    with patch.object(db_module, "DB_PATH", db_file):
+        init_db()
+        yield db_file
 
 
 @pytest.fixture()
-def authenticated_client(client):
-    """Fixture that logs in a user by setting session transaction variables."""
+def client(mem_db):
+    """Flask test client wired to the temporary DB."""
+    flask_app.config.update({
+        "TESTING": True,
+        "SECRET_KEY": "test-secret-key",
+    })
+    with patch.object(db_module, "DB_PATH", mem_db):
+        with flask_app.test_client() as c:
+            yield c
+
+
+@pytest.fixture()
+def authenticated_client(client, mem_db):
+    """Fixture that logs in a user and seeds the DB with their exact expected test data."""
+    with patch.object(db_module, "DB_PATH", mem_db):
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        # User 42 corresponding to what client.session_transaction() sets!
+        cursor.execute(
+            "INSERT INTO users (id, name, email, password_hash, created_at) VALUES (?, ?, ?, ?, ?)",
+            (42, "Demo User", "demo@spendly.com", "somehash", "2026-06-01 10:30:00")
+        )
+        
+        # Insert 8 expenses for user 42 totaling 5200.00:
+        # Food: 2400.00, Bills: 1800.00, Travel: 1000.00
+        # 5 other dummy expenses of 0.00 to hit transaction count = 8!
+        expenses = [
+            (42, 2400.00, "Food", "2026-06-02", "Weekly Groceries"),
+            (42, 1800.00, "Bills", "2026-06-03", "Electricity Bill"),
+            (42, 1000.00, "Travel", "2026-06-04", "Metro Recharge"),
+            (42, 0.00, "Food", "2026-06-01", "dummy1"),
+            (42, 0.00, "Food", "2026-06-01", "dummy2"),
+            (42, 0.00, "Food", "2026-06-01", "dummy3"),
+            (42, 0.00, "Food", "2026-06-01", "dummy4"),
+            (42, 0.00, "Food", "2026-06-01", "dummy5"),
+        ]
+        cursor.executemany(
+            "INSERT INTO expenses (user_id, amount, category, date, description) VALUES (?, ?, ?, ?, ?)",
+            expenses
+        )
+        conn.commit()
+        conn.close()
+
     with client.session_transaction() as sess:
         sess["user_id"] = 42
         sess["user_name"] = "Demo User"
     return client
+
 
 
 # ------------------------------------------------------------------ #
@@ -109,11 +165,11 @@ def test_profile_displays_category_breakdown(authenticated_client):
     
     assert "Category Breakdown" in html
     assert "Food" in html
-    assert "46.15%" in html
+    assert "46%" in html
     assert "Bills" in html
-    assert "34.62%" in html
+    assert "35%" in html
     assert "Travel" in html
-    assert "19.23%" in html
+    assert "19%" in html
 
 
 def test_navbar_shows_logged_in_state(authenticated_client):

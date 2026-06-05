@@ -64,14 +64,14 @@
                     {% for cat in categories %}
                     <div class="category-row">
                         <div class="category-meta">
-                            <span class="category-name">{{ cat.category }}</span>
+                            <span class="category-name">{{ cat.name }}</span>
                             <span class="category-amt text-tabular">₹{{ "{:,.2f}".format(cat.amount) }}</span>
                         </div>
                         <div class="progress-bar-container">
                             <div class="progress-bar-track">
-                                <div class="progress-bar-fill fill-{{ cat.category|lower }}" style="width: {{ cat.percentage }}%;"></div>
+                                <div class="progress-bar-fill fill-{{ cat.name|lower }}" style="width: {{ cat.pct }}%;"></div>
                             </div>
-                            <span class="progress-percentage text-tabular">{{ cat.percentage }}%</span>
+                            <span class="progress-percentage text-tabular">{{ cat.pct }}%</span>
                         </div>
                     </div>
                     {% endfor %}
