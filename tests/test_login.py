@@ -79,12 +79,12 @@ def test_login_get_has_correct_h1(client):
 
 
 def test_login_already_logged_in_redirects(client):
-    """GET /login while already logged in must redirect to /dashboard (302)."""
+    """GET /login while already logged in must redirect to /profile (302)."""
     with client.session_transaction() as sess:
         sess["user_id"] = 99
     response = client.get("/login")
     assert response.status_code == 302
-    assert "/dashboard" in response.headers["Location"]
+    assert "/profile" in response.headers["Location"]
 
 
 # ------------------------------------------------------------------ #
@@ -92,14 +92,14 @@ def test_login_already_logged_in_redirects(client):
 # ------------------------------------------------------------------ #
 
 def test_login_post_valid_credentials(client, test_user):
-    """Submitting valid credentials sets user_id in session and redirects to dashboard."""
+    """Submitting valid credentials sets user_id in session and redirects to profile."""
     response = client.post("/login", data={
         "email": test_user["email"],
         "password": test_user["password"]
     }, follow_redirects=False)
     
     assert response.status_code == 302
-    assert "/dashboard" in response.headers["Location"]
+    assert "/profile" in response.headers["Location"]
     
     with client.session_transaction() as sess:
         assert sess.get("user_id") is not None

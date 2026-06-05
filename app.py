@@ -1,5 +1,7 @@
 import os
 import sqlite3
+from functools import wraps
+from datetime import datetime
 
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -23,6 +25,20 @@ with app.app_context():
 
 
 # ------------------------------------------------------------------ #
+# Helper Decorators                                                  #
+# ------------------------------------------------------------------ #
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get("user_id"):
+            flash("Please log in to access this page.", "error")
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+# ------------------------------------------------------------------ #
 # Routes                                                              #
 # ------------------------------------------------------------------ #
 
@@ -35,7 +51,7 @@ def landing():
 def register():
     # Already-logged-in guard — redirect authenticated users away from this page
     if session.get("user_id"):
-        return redirect(url_for("dashboard"))
+        return redirect(url_for("profile"))
 
     if request.method == "GET":
         return render_template("register.html", name="", email="")
@@ -79,7 +95,7 @@ def register():
 def login():
     # Already-logged-in guard — redirect authenticated users away from this page
     if session.get("user_id"):
-        return redirect(url_for("dashboard"))
+        return redirect(url_for("profile"))
 
     if request.method == "GET":
         return render_template("login.html", email="")
@@ -105,7 +121,7 @@ def login():
     session["user_id"]   = user["id"]
     session["user_name"] = user["name"]
     flash(f"Welcome back, {user['name']}!", "success")
-    return redirect(url_for("dashboard"))
+    return redirect(url_for("profile"))
 
 
 @app.route("/terms")
@@ -123,6 +139,7 @@ def privacy():
 # ------------------------------------------------------------------ #
 
 @app.route("/dashboard")
+@login_required
 def dashboard():
     return "Dashboard — coming in Step 5"
 
@@ -135,8 +152,41 @@ def logout():
 
 
 @app.route("/profile")
+@login_required
 def profile():
-    return "Profile page — coming in Step 4"
+    user = {
+        "name": "Demo User",
+        "email": "demo@spendly.com",
+        "created_at": "2026-06-01 10:30:00"
+    }
+    stats = {
+        "total_spent": 5200.00,
+        "transaction_count": 8,
+        "top_category": "Food"
+    }
+    expenses = [
+        {"date": "2026-06-02", "description": "Weekly Groceries", "category": "Food", "amount": 2400.00},
+        {"date": "2026-06-03", "description": "Electricity Bill", "category": "Bills", "amount": 1800.00},
+        {"date": "2026-06-04", "description": "Metro Recharge", "category": "Travel", "amount": 1000.00}
+    ]
+    categories = [
+        {"category": "Food", "amount": 2400.00, "percentage": 46.15},
+        {"category": "Bills", "amount": 1800.00, "percentage": 34.62},
+        {"category": "Travel", "amount": 1000.00, "percentage": 19.23}
+    ]
+    initials = ''.join(w[0].upper() for w in user['name'].split()[:2])
+    created_dt = datetime.strptime(user["created_at"], "%Y-%m-%d %H:%M:%S")
+    member_since = created_dt.strftime("%B %Y")
+    
+    return render_template(
+        "profile.html",
+        user=user,
+        stats=stats,
+        expenses=expenses,
+        categories=categories,
+        initials=initials,
+        member_since=member_since
+    )
 
 
 @app.route("/expenses/add")

@@ -1,0 +1,414 @@
+/* profile.css — Scoped styling for user profile components */
+
+:root {
+    /* Category Accent Color Variables (Strictly no hex codes used outside declaration) */
+    --color-food: #f97316;
+    --color-food-bg: #fff7ed;
+    --color-food-border: #ffedd5;
+
+    --color-travel: #2563eb;
+    --color-travel-bg: #eff6ff;
+    --color-travel-border: #dbeafe;
+
+    --color-bills: #dc2626;
+    --color-bills-bg: #fef2f2;
+    --color-bills-border: #fee2e2;
+
+    --color-shopping: #7c3aed;
+    --color-shopping-bg: #f5f3ff;
+    --color-shopping-border: #ede9fe;
+
+    --color-health: #0d9488;
+    --color-health-bg: #f0fdfa;
+    --color-health-border: #ccfbf1;
+
+    --color-entertainment: #db2777;
+    --color-entertainment-bg: #fff1f2;
+    --color-entertainment-border: #ffe4e6;
+
+    --color-other: #4b5563;
+    --color-other-bg: #f9fafb;
+    --color-other-border: #f3f4f6;
+
+    /* Base local page variables */
+    --avatar-size: 80px;
+    --gap-sm: 0.5rem;
+    --gap-md: 1rem;
+    --gap-lg: 1.5rem;
+}
+
+/* Page Layout Container */
+.profile-container {
+    max-width: var(--max-width);
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-lg);
+}
+
+/* User Info Card Sidebar */
+.profile-sidebar {
+    width: 100%;
+}
+
+.profile-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--gap-lg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.user-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+}
+
+.avatar-circle {
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--gap-md);
+    border: 3px solid var(--accent-light);
+}
+
+.avatar-text {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    color: var(--paper);
+    font-weight: 600;
+}
+
+.user-display-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+}
+
+.user-display-email {
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    margin-bottom: var(--gap-lg);
+}
+
+.member-since {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-sm);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    background: var(--paper);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-soft);
+}
+
+.meta-icon {
+    width: 14px;
+    height: 14px;
+    color: var(--ink-muted);
+}
+
+/* Main Profile Panel */
+.profile-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-lg);
+}
+
+/* Stats Row Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--gap-md);
+}
+
+.stat-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+}
+
+.stat-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-muted);
+}
+
+.stat-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--ink-faint);
+}
+
+.stat-value {
+    font-family: var(--font-display);
+    font-size: 1.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.2;
+}
+
+/* Badges styling */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    text-transform: capitalize;
+}
+
+.badge-food {
+    background: var(--color-food-bg);
+    color: var(--color-food);
+    border: 1px solid var(--color-food-border);
+}
+
+.badge-travel {
+    background: var(--color-travel-bg);
+    color: var(--color-travel);
+    border: 1px solid var(--color-travel-border);
+}
+
+.badge-bills {
+    background: var(--color-bills-bg);
+    color: var(--color-bills);
+    border: 1px solid var(--color-bills-border);
+}
+
+.badge-shopping {
+    background: var(--color-shopping-bg);
+    color: var(--color-shopping);
+    border: 1px solid var(--color-shopping-border);
+}
+
+.badge-health {
+    background: var(--color-health-bg);
+    color: var(--color-health);
+    border: 1px solid var(--color-health-border);
+}
+
+.badge-entertainment {
+    background: var(--color-entertainment-bg);
+    color: var(--color-entertainment);
+    border: 1px solid var(--color-entertainment-border);
+}
+
+.badge-other {
+    background: var(--color-other-bg);
+    color: var(--color-other);
+    border: 1px solid var(--color-other-border);
+}
+
+/* Sections grids: Breakdown & History */
+.profile-sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-lg);
+}
+
+.section-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-lg);
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: var(--gap-sm);
+    border-bottom: 1px solid var(--border-soft);
+    padding-bottom: var(--gap-sm);
+}
+
+.section-title-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--accent);
+}
+
+/* Category list breakdown */
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+}
+
+.category-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.category-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.category-name {
+    color: var(--ink-soft);
+}
+
+.category-amt {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.progress-bar-container {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md);
+}
+
+.progress-bar-track {
+    flex: 1;
+    height: 8px;
+    background: var(--border-soft);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.5s ease-out;
+}
+
+/* Fill colors maps */
+.fill-food { background: var(--color-food); }
+.fill-travel { background: var(--color-travel); }
+.fill-bills { background: var(--color-bills); }
+.fill-shopping { background: var(--color-shopping); }
+.fill-health { background: var(--color-health); }
+.fill-entertainment { background: var(--color-entertainment); }
+.fill-other { background: var(--color-other); }
+
+.progress-percentage {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    font-weight: 500;
+    width: 40px;
+    text-align: right;
+}
+
+/* Recent Transactions Table */
+.table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-soft);
+}
+
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.transaction-table th,
+.transaction-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.transaction-table th {
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.transaction-table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.transaction-table tbody tr:hover {
+    background-color: var(--paper-warm);
+}
+
+.transaction-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.desc-cell {
+    font-weight: 500;
+    color: var(--ink);
+}
+
+/* Global utility rules */
+.text-right {
+    text-align: right;
+}
+
+.text-bold {
+    font-weight: 600;
+}
+
+.text-muted {
+    color: var(--ink-muted);
+}
+
+.text-tabular {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Responsive Rules */
+
+/* Tablet width adjustment */
+@media (min-width: 576px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Desktop screen sizing */
+@media (min-width: 768px) {
+    .profile-container {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        align-items: start;
+        margin: 3rem auto;
+        gap: var(--gap-lg);
+    }
+
+    .profile-sidebar {
+        position: sticky;
+        top: 80px; /* Offset for the sticky navbar */
+    }
+
+    .profile-sections {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--gap-lg);
+    }
+}
