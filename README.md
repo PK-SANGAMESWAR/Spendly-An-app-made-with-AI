@@ -119,8 +119,8 @@ Spendly is deployed live on Railway!
 
 - **Live URL:** [https://dynamic-mercy-production-98ac.up.railway.app](https://dynamic-mercy-production-98ac.up.railway.app)
 - **Demo User Credentials:**
-  - **Email:** `demo@spendly.com`
-  - **Password:** `demo123`
+  - **Email:** `xxxxx`
+  - **Password:** `xxxxx`
 
 ### 🔍 Troubleshooting DNS Issues (e.g. Railtel / Local ISPs)
 
