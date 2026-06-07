@@ -10,8 +10,14 @@
 <div class="dashboard-container">
     <!-- Header Welcome -->
     <header class="dashboard-header">
-        <h1 class="welcome-heading">Welcome back, {{ user.name }}</h1>
-        <p class="dashboard-subtitle">Here is your financial overview for Spendly</p>
+        <div class="header-titles">
+            <h1 class="welcome-heading">Welcome back, {{ user.name }}</h1>
+            <p class="dashboard-subtitle">Here is your financial overview for Spendly</p>
+        </div>
+        <a href="{{ url_for('add_expense') }}" class="btn-primary header-action-btn">
+            <i data-lucide="plus" class="btn-icon"></i>
+            Add Expense
+        </a>
     </header>
 
     <!-- Section 1: Summary Stats Row -->
@@ -67,7 +73,7 @@
                         </div>
                         <div class="progress-bar-container">
                             <div class="progress-bar-track">
-                                <div class="progress-bar-fill fill-{{ cat.name | lower | replace(' ', '-') }}" style="width: {{ cat.pct }}%;"></div>
+                                <div class="progress-bar-fill fill-{{ cat.name | lower | replace(' ', '-') }}" style="--pct: {{ cat.pct }}%;"></div>
                             </div>
                             <span class="progress-percentage text-tabular">{{ cat.pct }}%</span>
                         </div>
@@ -157,7 +163,7 @@
 
                     <span class="pagination-indicator">Page {{ page }} of {{ total_pages }}</span>
 
-                    {% if page < total_pages %}
+                    {% if total_pages > page %}
                     <a href="{{ url_for('dashboard', q=q, category=category, page=page+1) }}" class="pagination-btn">Next →</a>
                     {% else %}
                     <span class="pagination-btn disabled">Next →</span>
@@ -177,7 +183,7 @@
                     <i data-lucide="shopping-bag" class="empty-state-icon"></i>
                     <h3>No expenses yet</h3>
                     <p>Add your expenses to see detailed category analysis and budget breakdowns.</p>
-                    <a href="#" class="btn-primary">Add your first expense</a>
+                    <a href="{{ url_for('add_expense') }}" class="btn-primary">Add your first expense</a>
                     {% endif %}
                 </div>
                 {% endif %}
